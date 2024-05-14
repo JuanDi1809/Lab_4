@@ -36,13 +36,13 @@ int Menu::validOpcion(int cantOpciones){
 void Menu::menuPrincipal(){
     cout << "1. Crear red(forma manual)\n";
     cout << "2. Crear red(topografia desde archivo)\n";
-    cout << "3. crear red(forma aleatoria)\n";
-    cout << "4. salir del sistema\n";
+    cout << "3. salir del sistema\n";
 }
 
 void Menu::menuRedManual(){
     cout << "1. Agregar enrutador\n";
     cout << "2. Remover enrutador\n";
-    cout << "3. Costo de envio\n";
-    cout << "4. Volver al menu principal\n";
+    cout << "3. Costo de envio y ruta\n";
+    cout << "4. Mostrar tabla de enrutamiento\n";
+    cout << "5. Volver al menu principal\n";
 }

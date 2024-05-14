@@ -7,11 +7,9 @@
 
 class Red
 {
-
-private:
+public:
     vector <Router*> routers;
 
-public:
      //Constructor
      Red();
 
@@ -30,11 +28,23 @@ public:
      //Metodo para agregar un router
      void agregarRouter(Router*);
 
-     //Metodo para mostrar la tabla de routers
-     void mostrarTabla(string);
+     //Metodo para listar los routers menos el nombre del router que agrego
+     void listarRouters(string);
 
-     //Metodo para listar los routers
-     void listarRouters();
+     //Metodo para crear tabla de enrutamiento
+     void crearTablaEnrutamiento(int);
+
+     //Metodo par aeliminar enrutador
+     void eliminarEnrutador(int);
+
+    //Metodo para eliminar el enrutador de la tabla de enrutamiento y de los routers con el que son vecinos
+     void eliminarVecinos(int);
+
+    //METODOS PARA CREAR LA RED DESDE UN ARCHIVO
+
+     //Metodo para verificar el nombre de archivo
+     string verificarArchivo();
+
 };
 
 #endif // RED_H
