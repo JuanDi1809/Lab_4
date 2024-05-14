@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
+#include <vector>
 #include <locale>
 #include <QCoreApplication>
 #include <QTextStream>
@@ -23,9 +25,66 @@ int main(){
 
         cout << endl;
 
-        if(opcionMenuPrincipal == 1){
+        if(opcionMenuPrincipal == 1 || opcionMenuPrincipal == 2){
             Red red1;
 
+            if(opcionMenuPrincipal == 2){
+                string nombreArchivo = red1.verificarArchivo();
+
+                ifstream archivo; //Creo el objeto
+
+                archivo.open(nombreArchivo, ios::in); //Abro el archivo
+
+                string linea;
+                int inicio = 0;
+                int pos = 1;
+                while(getline(archivo, linea)){
+                    if(linea.substr(0,7) == "Routers"){
+                        string nombreRouter;
+                        string routers = linea.substr(linea.find(" ") + 1);
+                        while(routers.find(",") != string::npos){
+                            nombreRouter = routers.substr(inicio, routers.find(","));
+
+                            Router* router = new Router(nombreRouter);
+                            //Agrego el router creado a la red
+                            red1.agregarRouter(router);
+
+                            routers = routers.substr(routers.find(",") + 1);
+                        }
+                        //Esta parte es para agregar el nombre del final
+                        Router* router = new Router(routers);
+                        red1.agregarRouter(router);
+                    }
+                    else if(linea != " "){
+                        vector <string> vecinos;
+                        vector <int> costos;
+                        int cont = 0;
+
+                        string token;
+                        stringstream ss(linea);
+                        while(getline(ss,token,',')){
+                            if(cont == 0){
+                                vecinos.push_back(token);
+                                cont++;
+                            }
+                            else{
+                                costos.push_back(stoi(token));
+                                cont = 0;
+                            }
+                        }
+
+                        Router* router = red1.getObjetoRouter(pos);
+
+                        cout << router->getNombre();
+
+                        for(int i = 0; i < vecinos.size(); i++){
+                            router->nuevoVecino(red1.getObjetoRouter2(vecinos[i]),costos[i]);
+                        }
+
+                        pos++;
+                    }
+                }
+            }
             while(true){
                 Menu menu2;
 
@@ -84,20 +143,14 @@ int main(){
                     cout << endl;
                 }
                 else if(opcionMenuRedManual == 2){//Remover enrutador
-
-                    red1.listarRouters("");
+                     red1.listarRouters("");
 
                     cout << "Selecciona el router que deseas eliminar\n";
                     int opcion = menu2.validOpcion(red1.getCantRouters());
 
                     Router* router = red1.getObjetoRouter(opcion);
 
-                    if(router->esCrucialParaConectividad()){
-                        cout << "No es prosible emliminar este enrutador, puede generar fallas en la red\n";
-                    }
-                    else{
-                        red1.eliminarVecinos(opcion); //Con esto elimino al router de los routers a los cuales es vecino
-                    }
+                    red1.eliminarVecinos(opcion); //Con esto elimino al router de los routers a los cuales es vecino
                     router->tablaEnrutamiento.clear();
 
                 }
@@ -146,42 +199,6 @@ int main(){
                     break;
                 }
             }
-        }
-        else if(opcionMenuPrincipal == 2){
-            Red red2;
-
-            string nombreArchivo = red2.verificarArchivo();
-
-            ifstream archivo; //Creo el objeto
-
-            archivo.open(nombreArchivo, ios::in); //Abro el archivo
-
-            string linea;
-            while(getline(archivo, linea)){
-                if(linea.substr(0,7) == "Routers"){
-                    string nombreRouter;
-                    string routers = linea.substr(linea.find(" ") + 1);
-                    int inicio = 0;
-                    while(routers.find(",") != string::npos){
-                        nombreRouter = routers.substr(inicio, routers.find(","));
-
-                        Router* router = new Router(nombreRouter);
-                        //Agrego el router creado a la red
-                        red2.agregarRouter(router);
-
-                        routers = routers.substr(routers.find(",") + 1);
-                    }
-                    //Esta parte es para agregar el nombre del final
-                    Router* router = new Router(routers);
-                    red2.agregarRouter(router);
-                }
-                else{
-
-                }
-            }
-
-
-
         }
         else{
             break;

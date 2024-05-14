@@ -53,7 +53,7 @@ int Router::menorCosto(string routerDestino){
 }
 
 bool Router::esCrucialParaConectividad() {
-    if (vecinos.size() >= 2) {
+    if (vecinos.size() > 2) {
         return true;
     }
     return false;

@@ -19,8 +19,11 @@ public:
      //Getter
      int getCantRouters() const;
 
-     //Geetter para obtner un onjeto Router
+     //Geetter para obtener un objeto Router con posicion
      Router* getObjetoRouter(int) const;
+
+     //Getter para obtenejr un onjeto router con el nombre
+     Router* getObjetoRouter2(string);
 
      //Meotodo para verificar que los nombres de los routers no esten repetidos
      string verificarRouter();

@@ -78,9 +78,6 @@ void Red::eliminarVecinos(int pos){
 
     //Elimino el router de la red
     routers.erase(routers.begin() + pos - 1);
-
-    // Liberar la memoria del router eliminado
-    delete routers[pos - 1];
 }
 
 void Red::listarRouters(string routerAgregado){
@@ -143,6 +140,14 @@ string Red::verificarArchivo(){
     return nombre;
 }
 
+Router* Red::getObjetoRouter2(string nombreRouter){
+    for(Router* router : routers){
+        if(nombreRouter == router->getNombre()){
+            return router;
+        }
 
+    }
+
+}
 
 
